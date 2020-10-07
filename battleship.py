@@ -1,6 +1,8 @@
 import random
 import copy
 class ship:
+    #ship class. Each ship has a size, a type, a direction, a starting coordinate, and a dictionary of coordinates
+    #the dictionary maps coordinates to whether they are hit or not
     def __init__(self):
         self.size = 0
         self.type = ""
@@ -8,6 +10,7 @@ class ship:
         self.startcoord = (0,0)
         self.coords = {}
     def make_ship(self, type, start, direction):
+        #makes a new ship if it does not go out of bounds
         self.size = 0
         self.type = type
         if type == "Carrier": self.size = 5
@@ -47,6 +50,7 @@ class ship:
     def get_coords(self):
         return self.coords
     def try_hit(self, coord):
+        #sees if this ship is hit by a strike at position coord
         hit = False
         sunk = True
         for val in self.coords:
@@ -70,6 +74,9 @@ class Board:
         self.board = {}
 
     def make_board(self, Carrier, Battleship, Cruiser1, Cruiser2, Destroyer):
+        #takes in the 5 ships and constructs the board.
+        #the board is stored here as a dictionary, with tuples that map to water, hit water,
+        #the name of the ship, or hit
         self.sunken = 0
         self.Carrier = Carrier
         self.Battleship = Battleship
@@ -90,6 +97,7 @@ class Board:
     def get_board(self):
         return self.board
     def try_hit(self, tuple):
+        #given a hit, update the board accordingly and return the outcome
         if self.board[tuple] == "hit" or self.board[tuple] == "hit water":
             return "already attempted"
         for x in self.shiplist:
@@ -105,6 +113,7 @@ class Board:
         self.board[tuple] = "hit water"
         return "miss"
     def print_board(self):
+        #print the board
         for x in range(10):
             for y in range(10):
                 add = 11 - len(self.board[(y,x)])
@@ -135,6 +144,7 @@ class Player:
         else:
             return s[0:len(s)-16] + ", you Lose!"
 def make_random_Board():
+    #put ships in random locations
     ship1 = ship()
     ship2 = ship()
     ship3 = ship()
@@ -179,6 +189,8 @@ def make_random_Board():
     # board1.print_board()
     return board1
 def play_random_Game():
+    #make two random players, and play them against each other, all while printing the board locations in terminal
+    #and displaying a winner at the end
     board1 = make_random_Board()
     board2 = make_random_Board()
     player1 = Player(board1, board2)
